@@ -1033,237 +1033,253 @@
             // Function to apply all changes to the HTML
             function applyChanges() {
                 const html = htmlInput.value;
-                const clickLink = clickLinkInput.value;
-                const optOutLink = optOutLinkInput.value;
-                const unsubLink = unsubLinkInput.value;
-                const opensLink = opensLinkInput.value;
-                const cleanAttributes = cleanAttributesCheckbox.checked;
-                const hideImages = hideImagesCheckbox.checked;
-                const removeText = removeTextCheckbox.checked;
-                const cleanComments = cleanCommentsCheckbox.checked;
-
                 if (!html) {
                     alert('Please paste some HTML first');
                     return;
                 }
 
-                // Create a temporary DOM element to parse the HTML
+                // We'll use string manipulation instead of DOM parsing to preserve exact formatting
+                let modifiedHtml = html;
+
+                // Get the click, opt-out, unsubscribe, and opens tracking links
+                const clickLink = clickLinkInput.value;
+                const optOutLink = optOutLinkInput.value;
+                const unsubLink = unsubLinkInput.value;
+                const opensLink = opensLinkInput.value;
+
+                // Create a temporary DOM element to analyze the HTML structure
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
 
-                // Get the head element to exclude it from processing
-                const head = doc.querySelector('head');
-
                 // 1. Replace links based on their content/purpose
-                const links = doc.querySelectorAll('a');
-                links.forEach(link => {
-                    const href = link.getAttribute('href');
-                    const text = link.textContent.toLowerCase();
+                if (clickLink || optOutLink || unsubLink) {
+                    const links = doc.querySelectorAll('a');
 
-                    if (!href) return;
+                    links.forEach(link => {
+                        // Skip links in head
+                        const head = doc.querySelector('head');
+                        if (head && head.contains(link)) return;
 
-                    // Skip elements in head
-                    if (head && head.contains(link)) return;
+                        const href = link.getAttribute('href');
+                        if (!href) return;
 
-                    // Replace click links
-                    if ((href.includes('/click') ||
-                        href.includes('track') ||
-                        text.includes('click') ||
-                        text.includes('buy') ||
-                        text.includes('shop') ||
-                        text.includes('learn more')) &&
-                        !text.includes('unsubscribe') &&
-                        !text.includes('opt')) {
-                        if (clickLink) link.setAttribute('href', clickLink);
-                    }
+                        const text = link.textContent.toLowerCase();
+                        let newHref = null;
 
-                    // Replace opt-out links
-                    else if (href.includes('opt') ||
-                        text.includes('opt out') ||
-                        text.includes('opt-out')) {
-                        if (optOutLink) link.setAttribute('href', optOutLink);
-                    }
+                        // Determine which type of link it is
+                        if ((href.includes('/click') ||
+                            href.includes('track') ||
+                            text.includes('click') ||
+                            text.includes('buy') ||
+                            text.includes('shop') ||
+                            text.includes('learn more')) &&
+                            !text.includes('unsubscribe') &&
+                            !text.includes('opt')) {
+                            if (clickLink) newHref = clickLink;
+                        }
+                        else if (href.includes('opt') ||
+                            text.includes('opt out') ||
+                            text.includes('opt-out')) {
+                            if (optOutLink) newHref = optOutLink;
+                        }
+                        else if (href.includes('unsub') ||
+                            text.includes('unsub') ||
+                            text.includes('remove me')) {
+                            if (unsubLink) newHref = unsubLink;
+                        }
 
-                    // Replace unsubscribe links
-                    else if (href.includes('unsub') ||
-                        text.includes('unsub') ||
-                        text.includes('remove me')) {
-                        if (unsubLink) link.setAttribute('href', unsubLink);
-                    }
-                });
+                        // Replace the href in the original HTML if needed
+                        if (newHref) {
+                            // Create a regex that matches this specific href attribute
+                            const hrefRegex = new RegExp(`href=["']${escapeRegExp(href)}["']`, 'g');
+                            modifiedHtml = modifiedHtml.replace(hrefRegex, `href="${newHref}"`);
+                        }
+                    });
+                }
 
                 // 2. Handle opens tracking
                 if (opensLink) {
-                    // Look for existing tracking pixels
+                    // Check if there's already a tracking pixel
                     const images = doc.querySelectorAll('img');
                     let trackingPixelFound = false;
 
-                    // Check each image to see if it's a tracking pixel
-                    images.forEach(img => {
+                    for (let img of images) {
                         if (isTrackingPixel(img)) {
-                            // Update existing tracking pixel
-                            img.setAttribute('src', opensLink);
-                            trackingPixelFound = true;
-                        }
-                    });
-
-                    // If no tracking pixel found, add one
-                    if (!trackingPixelFound) {
-                        const body = doc.querySelector('body');
-                        if (body) {
-                            const trackingPixel = doc.createElement('img');
-                            trackingPixel.setAttribute('src', opensLink);
-                            trackingPixel.setAttribute('alt', '');
-                            trackingPixel.setAttribute('width', '1');
-                            trackingPixel.setAttribute('height', '1');
-                            trackingPixel.setAttribute('style', 'display:none; width:1px; height:1px;');
-                            body.appendChild(trackingPixel);
-                        }
-                    }
-                }
-
-                // 3. Clean attributes if checked
-                if (cleanAttributes) {
-                    // Process href attributes
-                    const hrefs = doc.querySelectorAll('[href]');
-                    hrefs.forEach(el => {
-                        // Skip elements in head
-                        if (head && head.contains(el)) return;
-
-                        // Empty the href attribute
-                        el.setAttribute('href', '');
-                    });
-
-                    // Process src attributes (except tracking pixels)
-                    const srcs = doc.querySelectorAll('[src]');
-                    srcs.forEach(el => {
-                        // Skip elements in head
-                        if (head && head.contains(el)) return;
-
-                        // Skip tracking pixels
-                        if (el.tagName === 'IMG' && isTrackingPixel(el)) return;
-
-                        // Empty the src attribute
-                        el.setAttribute('src', '');
-                    });
-
-                    // Process alt attributes
-                    const alts = doc.querySelectorAll('[alt]');
-                    alts.forEach(el => {
-                        // Skip elements in head
-                        if (head && head.contains(el)) return;
-
-                        // Empty the alt attribute
-                        el.setAttribute('alt', '');
-                    });
-
-                    // Process inline styles with background images
-                    const elementsWithStyle = doc.querySelectorAll('[style*="background"]');
-                    elementsWithStyle.forEach(el => {
-                        // Skip elements in head
-                        if (head && head.contains(el)) return;
-
-                        if (el.getAttribute('style')) {
-                            // Remove url() patterns in inline styles
-                            el.setAttribute('style', el.getAttribute('style')
-                                .replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'url("")')
-                                .replace(/background-image:[^;]+;/g, 'background-image: none;'));
-                        }
-                    });
-
-                    // Process style tags with background images
-                    const styleTags = doc.querySelectorAll('style');
-                    styleTags.forEach(styleTag => {
-                        // Skip style tags in head
-                        if (head && head.contains(styleTag)) return;
-
-                        if (styleTag.textContent) {
-                            // Replace url() patterns in CSS
-                            styleTag.textContent = styleTag.textContent.replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'url("")');
-                        }
-                    });
-                }
-
-                // 4. Hide images if checked (except tracking pixels)
-                if (hideImages) {
-                    const images = doc.querySelectorAll('img');
-                    images.forEach(img => {
-                        // Skip elements in head
-                        if (head && head.contains(img)) return;
-
-                        // Skip tracking pixels
-                        if (isTrackingPixel(img)) return;
-
-                        // Add display:none style
-                        const currentStyle = img.getAttribute('style') || '';
-                        img.setAttribute('style', currentStyle + '; display: none !important;');
-                    });
-                }
-
-                // 5. Remove visible text if checked
-                if (removeText) {
-                    // Function to recursively process text nodes
-                    function processTextNodes(node) {
-                        if (node.nodeType === Node.TEXT_NODE) {
-                            // Skip if parent is script or style
-                            const parentTag = node.parentNode.tagName;
-                            if (parentTag === 'SCRIPT' || parentTag === 'STYLE') return;
-
-                            // Skip if in head
-                            if (head && head.contains(node)) return;
-
-                            // Replace text with empty string
-                            node.textContent = '';
-                        } else {
-                            // Process child nodes
-                            for (let i = 0; i < node.childNodes.length; i++) {
-                                processTextNodes(node.childNodes[i]);
+                            // Found a tracking pixel, update its src
+                            const src = img.getAttribute('src');
+                            if (src) {
+                                const srcRegex = new RegExp(`src=["']${escapeRegExp(src)}["']`, 'g');
+                                modifiedHtml = modifiedHtml.replace(srcRegex, `src="${opensLink}"`);
+                                trackingPixelFound = true;
                             }
                         }
                     }
 
-                    // Start processing from body
-                    const body = doc.querySelector('body');
-                    if (body) {
-                        processTextNodes(body);
+                    // If no tracking pixel found, add one before the closing body tag
+                    if (!trackingPixelFound) {
+                        const trackingPixel = `<img src="${opensLink}" alt="" width="1" height="1" style="display:none; width:1px; height:1px;">`;
+                        modifiedHtml = modifiedHtml.replace(/<\/body>/i, `${trackingPixel}</body>`);
                     }
                 }
 
+                // 3. Clean attributes if checked
+                if (cleanAttributesCheckbox.checked) {
+                    // Get the head content to preserve it
+                    const headContent = modifiedHtml.match(/<head>[\s\S]*?<\/head>/i)?.[0] || '';
+
+                    // Process the body content
+                    let bodyContent = modifiedHtml;
+                    if (headContent) {
+                        bodyContent = modifiedHtml.replace(headContent, '<!-- HEAD_PLACEHOLDER -->');
+                    }
+
+                    // Empty all href attributes in body (except those we specifically set)
+                    if (clickLink || optOutLink || unsubLink) {
+                        // Create patterns to avoid replacing our custom links
+                        const patterns = [];
+                        if (clickLink) patterns.push(clickLink);
+                        if (optOutLink) patterns.push(optOutLink);
+                        if (unsubLink) patterns.push(unsubLink);
+
+                        // Replace all hrefs except our custom ones
+                        bodyContent = bodyContent.replace(/href=["']([^"']*)["']/gi, (match, href) => {
+                            if (patterns.includes(href)) {
+                                return match; // Keep our custom links
+                            }
+                            return 'href=""';
+                        });
+                    } else {
+                        // Empty all href attributes
+                        bodyContent = bodyContent.replace(/href=["'][^"']*["']/gi, 'href=""');
+                    }
+
+                    // Empty all src attributes except tracking pixels
+                    if (opensLink) {
+                        bodyContent = bodyContent.replace(/src=["']([^"']*)["']/gi, (match, src) => {
+                            // Keep the opens tracking link
+                            if (src === opensLink) {
+                                return match;
+                            }
+
+                            // Check if this is a tracking pixel
+                            const isTracking = src.includes('/track') ||
+                                src.includes('/open') ||
+                                src.includes('/pixel') ||
+                                src.includes('beacon');
+
+                            // If it's a tracking pixel and we have an opensLink, replace it
+                            if (isTracking && opensLink) {
+                                return `src="${opensLink}"`;
+                            }
+
+                            // Otherwise empty it
+                            return 'src=""';
+                        });
+                    } else {
+                        // Empty all src attributes
+                        bodyContent = bodyContent.replace(/src=["'][^"']*["']/gi, 'src=""');
+                    }
+
+                    // Empty all alt attributes
+                    bodyContent = bodyContent.replace(/alt=["'][^"']*["']/gi, 'alt=""');
+
+                    // Empty all background URLs in inline styles
+                    bodyContent = bodyContent.replace(/url\(['"]?[^'")\s]+['"]?\)/gi, 'url("")');
+
+                    // Empty all background-image properties
+                    bodyContent = bodyContent.replace(/background-image\s*:\s*[^;]+;/gi, 'background-image: none;');
+
+                    // Reassemble the HTML
+                    if (headContent) {
+                        modifiedHtml = bodyContent.replace('<!-- HEAD_PLACEHOLDER -->', headContent);
+                    } else {
+                        modifiedHtml = bodyContent;
+                    }
+                }
+
+                // 4. Hide images if checked (except tracking pixels)
+                if (hideImagesCheckbox.checked) {
+                    // Identify tracking pixel img tags
+                    const trackingImgTags = [];
+                    images = doc.querySelectorAll('img');
+                    images.forEach(img => {
+                        if (isTrackingPixel(img)) {
+                            // Get the outerHTML of this tracking pixel
+                            const outerHTML = img.outerHTML;
+                            if (outerHTML) trackingImgTags.push(outerHTML);
+                        }
+                    });
+
+                    // Add display:none to all img tags except tracking pixels
+                    const imgRegex = /<img\s[^>]*>/gi;
+                    modifiedHtml = modifiedHtml.replace(imgRegex, (match) => {
+                        // Skip tracking pixels
+                        if (trackingImgTags.some(tag => tag.includes(match))) {
+                            return match;
+                        }
+
+                        // Check if there's already a style attribute
+                        if (match.includes('style="')) {
+                            return match.replace(/style="([^"]*)"/i, 'style="display: none !important; $1"');
+                        } else if (match.includes("style='")) {
+                            return match.replace(/style='([^']*)'/i, "style='display: none !important; $1'");
+                        } else {
+                            // No style attribute, add one
+                            return match.replace(/<img/, '<img style="display: none !important;"');
+                        }
+                    });
+                }
+
+                // 5. Remove visible text if checked
+                if (removeTextCheckbox.checked) {
+                    // Get the head content to preserve it
+                    const headContent = modifiedHtml.match(/<head>[\s\S]*?<\/head>/i)?.[0] || '';
+
+                    // Process the body content
+                    let bodyContent = modifiedHtml;
+                    if (headContent) {
+                        bodyContent = modifiedHtml.replace(headContent, '<!-- HEAD_PLACEHOLDER -->');
+                    }
+
+                    // Replace text nodes between tags, preserving the tags themselves
+                    // This regex looks for content between > and < characters
+                    bodyContent = bodyContent.replace(/>([^<>]*)</g, (match, text) => {
+                        // Skip if inside script or style tags
+                        const prevContext = bodyContent.substring(0, bodyContent.indexOf(match));
+                        const isInScript = prevContext.lastIndexOf('<script') > prevContext.lastIndexOf('</script');
+                        const isInStyle = prevContext.lastIndexOf('<style') > prevContext.lastIndexOf('</style');
+                        
+                        if (isInScript || isInStyle) {
+                            return match;
+                        }
+                        
+                        // Replace text with empty string
+                        return '><';
+                    });
+                    
+                    // Reassemble the HTML
+                    if (headContent) {
+                        modifiedHtml = bodyContent.replace('<!-- HEAD_PLACEHOLDER -->', headContent);
+                    } else {
+                        modifiedHtml = bodyContent;
+                    }
+                }
+                
                 // 6. Clean URLs in comments if checked
-                if (cleanComments) {
-                    // Create a node iterator to find all comments
-                    const commentIterator = doc.createNodeIterator(
-                        doc.documentElement,
-                        NodeFilter.SHOW_COMMENT,
-                        null,
-                        false
-                    );
-
-                    // Process each comment
-                    let commentNode;
-                    while ((commentNode = commentIterator.nextNode())) {
-                        // Skip comments in head
-                        if (head && head.contains(commentNode)) continue;
-
-                        // Clean URLs in comment text
-                        let commentText = commentNode.textContent;
-
-                        // Replace URLs in comments
-                        commentText = commentText.replace(/https?:\/\/[^\s'"]+/g, '');
-                        commentText = commentText.replace(/www\.[^\s'"]+/g, '');
-                        commentText = commentText.replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'url("")');
-
-                        // Update comment
-                        commentNode.textContent = commentText;
-                    }
+                if (cleanCommentsCheckbox.checked) {
+                    // Replace URLs in HTML comments
+                    modifiedHtml = modifiedHtml.replace(/<!--[\s\S]*?-->/g, (comment) => {
+                        // Clean URLs in the comment
+                        return comment
+                            .replace(/https?:\/\/[^\s'"]+/g, '')
+                            .replace(/www\.[^\s'"]+/g, '')
+                            .replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'url("")');
+                    });
                 }
-
-                // Get the modified HTML
-                const modifiedHtml = doc.documentElement.outerHTML;
-
+                
                 // Update the output
                 htmlOutput.value = modifiedHtml;
-
+                
                 // Show success message
                 statusMessage.textContent = "Changes applied successfully!";
                 statusMessage.classList.remove('hidden');
@@ -1272,20 +1288,25 @@
                 }, 3000);
             }
 
+            // Helper function to escape special characters in regex
+            function escapeRegExp(string) {
+                return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            }
+
             // Function to copy the modified HTML to clipboard
             function copyToClipboard() {
                 if (!htmlOutput.value) {
                     alert('No modified HTML to copy');
                     return;
                 }
-
+                
                 htmlOutput.select();
                 document.execCommand('copy');
-
+                
                 // Change button text temporarily
                 const originalText = copyButton.innerHTML;
                 copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Copied!';
-
+                
                 setTimeout(() => {
                     copyButton.innerHTML = originalText;
                 }, 2000);
@@ -1324,14 +1345,11 @@
   </div>
 </body>
 </html>`;
-
+            
             htmlInput.value = sampleHtml;
             analyzeHtml();
         });
     </script>
-    <footer class="text-center text-gray-600 mt-8 mb-4">
-        Made with ❤ by Flamma.
-    </footer>
 </body>
 
 </html>
