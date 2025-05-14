@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link Replacer Tool</title>
+    <title>Advanced HTML Email Cleaner</title>
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
@@ -518,6 +518,12 @@
             margin-bottom: calc(0.5rem * var(--tw-space-y-reverse))
         }
 
+        .space-y-3> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(0.75rem * var(--tw-space-y-reverse))
+        }
+
         .space-y-5> :not([hidden])~ :not([hidden]) {
             --tw-space-y-reverse: 0;
             margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
@@ -638,11 +644,6 @@
             line-height: 1.75rem
         }
 
-        .text-xs {
-            font-size: 0.75rem;
-            line-height: 1rem
-        }
-
         .font-bold {
             font-weight: 700
         }
@@ -653,11 +654,6 @@
 
         .font-semibold {
             font-weight: 600
-        }
-
-        .text-gray-500 {
-            --tw-text-opacity: 1;
-            color: rgb(107 114 128 / var(--tw-text-opacity, 1))
         }
 
         .text-gray-600 {
@@ -756,9 +752,9 @@
     <div class="container mx-auto px-4 py-8 max-w-6xl">
         <header class="text-center mb-8">
             <div class="gradient-bg inline-block px-4 py-2 rounded-lg shadow-lg">
-                <h1 class="text-3xl font-bold text-white">HTML Link Replacer</h1>
+                <h1 class="text-3xl font-bold text-white">Advanced HTML Email Cleaner</h1>
             </div>
-            <p class="text-gray-600 mt-3">Replace links and remove image URLs in your HTML with one click</p>
+            <p class="text-gray-600 mt-3">Clean HTML for email tracking and privacy</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -772,7 +768,7 @@
 
             <!-- Right panel: Link inputs and controls -->
             <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">New Links</h2>
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Cleaning Options</h2>
 
                 <div class="space-y-5">
                     <div>
@@ -798,20 +794,47 @@
                             placeholder="https://example.com/unsubscribe">
                     </div>
 
-                    <div class="pt-2">
-                        <div class="flex items-center mb-3">
-                            <input id="removeImages" type="checkbox"
+                    <div>
+                        <label for="opensLink" class="block text-sm font-medium text-gray-700 mb-1">Opens Tracking
+                            Link</label>
+                        <input type="text" id="opensLink"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            placeholder="https://example.com/open">
+                    </div>
+
+                    <div class="pt-2 space-y-3">
+                        <div class="flex items-center">
+                            <input id="cleanAttributes" type="checkbox" checked=""
                                 class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                            <label for="removeImages" class="ml-2 block text-sm font-medium text-gray-700">
-                                Remove all image URLs
+                            <label for="cleanAttributes" class="ml-2 block text-sm font-medium text-gray-700">
+                                Empty attributes (href, src, alt)
                             </label>
                         </div>
-                        <p class="text-xs text-gray-500 mb-3">Removes URLs from img src attributes, clears alt text,
-                            sets border to 0, and removes CSS background images</p>
+                        <div class="flex items-center">
+                            <input id="hideImages" type="checkbox" checked=""
+                                class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                            <label for="hideImages" class="ml-2 block text-sm font-medium text-gray-700">
+                                Hide all images (display: none)
+                            </label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="removeText" type="checkbox" checked=""
+                                class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                            <label for="removeText" class="ml-2 block text-sm font-medium text-gray-700">
+                                Remove visible text
+                            </label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="cleanComments" type="checkbox" checked=""
+                                class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                            <label for="cleanComments" class="ml-2 block text-sm font-medium text-gray-700">
+                                Clean URLs in comments
+                            </label>
+                        </div>
                     </div>
 
                     <div class="pt-2">
-                        <button id="changeButton"
+                        <button id="applyButton"
                             class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -839,11 +862,13 @@
 
                 <div class="mt-6 pt-6 border-t border-gray-200">
                     <h3 class="text-lg font-medium text-gray-800 mb-2">Content Detection</h3>
-                    <div id="linkStats" class="text-sm text-gray-600 space-y-2">
+                    <div id="contentStats" class="text-sm text-gray-600 space-y-2">
                         <p>Click links: <span id="clickCount" class="font-semibold">2</span></p>
                         <p>Opt-out links: <span id="optOutCount" class="font-semibold">1</span></p>
                         <p>Unsubscribe links: <span id="unsubCount" class="font-semibold">1</span></p>
                         <p>Images: <span id="imageCount" class="font-semibold">2</span></p>
+                        <p>Tracking pixels: <span id="trackingCount" class="font-semibold">1</span></p>
+                        <p>Comments: <span id="commentCount" class="font-semibold">2</span></p>
                     </div>
                 </div>
             </div>
@@ -870,26 +895,57 @@
             const clickLinkInput = document.getElementById('clickLink');
             const optOutLinkInput = document.getElementById('optOutLink');
             const unsubLinkInput = document.getElementById('unsubscribeLink');
-            const removeImagesCheckbox = document.getElementById('removeImages');
-            const changeButton = document.getElementById('changeButton');
+            const opensLinkInput = document.getElementById('opensLink');
+            const cleanAttributesCheckbox = document.getElementById('cleanAttributes');
+            const hideImagesCheckbox = document.getElementById('hideImages');
+            const removeTextCheckbox = document.getElementById('removeText');
+            const cleanCommentsCheckbox = document.getElementById('cleanComments');
+            const applyButton = document.getElementById('applyButton');
             const copyButton = document.getElementById('copyButton');
             const statusMessage = document.getElementById('statusMessage');
             const clickCount = document.getElementById('clickCount');
             const optOutCount = document.getElementById('optOutCount');
             const unsubCount = document.getElementById('unsubCount');
             const imageCount = document.getElementById('imageCount');
+            const trackingCount = document.getElementById('trackingCount');
+            const commentCount = document.getElementById('commentCount');
 
-            // Function to analyze HTML and count links and images
+            // Function to check if an image is likely a tracking pixel
+            function isTrackingPixel(img) {
+                // Check for common tracking pixel characteristics
+                const width = img.getAttribute('width');
+                const height = img.getAttribute('height');
+                const style = img.getAttribute('style') || '';
+
+                // Check dimensions
+                const isSmall = (width === '1' || width === '0' || height === '1' || height === '0');
+
+                // Check style
+                const hasHiddenStyle = style.includes('display:none') ||
+                    style.includes('visibility:hidden') ||
+                    style.includes('opacity:0');
+
+                // Check src for common tracking domains or patterns
+                const src = img.getAttribute('src') || '';
+                const hasTrackingUrl = src.includes('/track') ||
+                    src.includes('/open') ||
+                    src.includes('/pixel') ||
+                    src.includes('beacon');
+
+                return isSmall || hasHiddenStyle || hasTrackingUrl;
+            }
+
+            // Function to analyze HTML and count elements
             function analyzeHtml() {
                 const html = htmlInput.value;
                 if (!html) return;
 
                 // Create a temporary DOM element to parse the HTML
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
 
                 // Find all links
-                const links = tempDiv.querySelectorAll('a');
+                const links = doc.querySelectorAll('a');
 
                 // Initialize counters
                 let clicks = 0;
@@ -930,33 +986,61 @@
                     }
                 });
 
-                // Count images
-                const images = tempDiv.querySelectorAll('img');
-                const imgCount = images.length;
+                // Count images and tracking pixels
+                const images = doc.querySelectorAll('img');
+                let imgCount = 0;
+                let trackingPixels = 0;
+
+                images.forEach(img => {
+                    if (isTrackingPixel(img)) {
+                        trackingPixels++;
+                    } else {
+                        imgCount++;
+                    }
+                });
 
                 // Count background images in inline styles
-                const elementsWithStyle = tempDiv.querySelectorAll('[style*="background"]');
+                const elementsWithStyle = doc.querySelectorAll('[style*="background"]');
                 let bgImageCount = 0;
                 elementsWithStyle.forEach(el => {
-                    if (el.style.backgroundImage && el.style.backgroundImage.includes('url(')) {
+                    const style = el.getAttribute('style');
+                    if (style && (style.includes('url(') || style.includes('background-image'))) {
                         bgImageCount++;
                     }
                 });
+
+                // Count comments
+                const commentIterator = doc.createNodeIterator(
+                    doc.documentElement,
+                    NodeFilter.SHOW_COMMENT,
+                    null,
+                    false
+                );
+                let commentNodes = 0;
+                while (commentIterator.nextNode()) {
+                    commentNodes++;
+                }
 
                 // Update the UI
                 clickCount.textContent = clicks;
                 optOutCount.textContent = optOuts;
                 unsubCount.textContent = unsubs;
                 imageCount.textContent = imgCount + bgImageCount;
+                trackingCount.textContent = trackingPixels;
+                commentCount.textContent = commentNodes;
             }
 
-            // Function to replace links and optionally remove image URLs
+            // Function to apply all changes to the HTML
             function applyChanges() {
                 const html = htmlInput.value;
                 const clickLink = clickLinkInput.value;
                 const optOutLink = optOutLinkInput.value;
                 const unsubLink = unsubLinkInput.value;
-                const removeImages = removeImagesCheckbox.checked;
+                const opensLink = opensLinkInput.value;
+                const cleanAttributes = cleanAttributesCheckbox.checked;
+                const hideImages = hideImagesCheckbox.checked;
+                const removeText = removeTextCheckbox.checked;
+                const cleanComments = cleanCommentsCheckbox.checked;
 
                 if (!html) {
                     alert('Please paste some HTML first');
@@ -964,18 +1048,22 @@
                 }
 
                 // Create a temporary DOM element to parse the HTML
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
 
-                // Find all links
-                const links = tempDiv.querySelectorAll('a');
+                // Get the head element to exclude it from processing
+                const head = doc.querySelector('head');
 
-                // Replace links based on their content/purpose
+                // 1. Replace links based on their content/purpose
+                const links = doc.querySelectorAll('a');
                 links.forEach(link => {
                     const href = link.getAttribute('href');
                     const text = link.textContent.toLowerCase();
 
                     if (!href) return;
+
+                    // Skip elements in head
+                    if (head && head.contains(link)) return;
 
                     // Replace click links
                     if ((href.includes('/click') ||
@@ -1004,58 +1092,177 @@
                     }
                 });
 
-                // Remove image URLs if checkbox is checked
-                if (removeImages) {
-                    // Handle img tags
-                    const images = tempDiv.querySelectorAll('img');
+                // 2. Handle opens tracking
+                if (opensLink) {
+                    // Look for existing tracking pixels
+                    const images = doc.querySelectorAll('img');
+                    let trackingPixelFound = false;
+
+                    // Check each image to see if it's a tracking pixel
                     images.forEach(img => {
-                        // Remove src attribute
-                        img.removeAttribute('src');
-                        img.removeAttribute('srcset');
-
-                        // Clear alt text
-                        img.setAttribute('alt', '');
-
-                        // Set border to 0
-                        img.setAttribute('border', '0');
-
-                        // Make image completely invisible
-                        img.style.display = 'none';
-                        img.style.visibility = 'hidden';
-                        img.style.width = '0';
-                        img.style.height = '0';
-                    });
-
-                    // Handle inline background images
-                    const allElements = tempDiv.querySelectorAll('*');
-                    allElements.forEach(el => {
-                        if (el.style && el.style.backgroundImage && el.style.backgroundImage.includes('url(')) {
-                            el.style.backgroundImage = 'none';
+                        if (isTrackingPixel(img)) {
+                            // Update existing tracking pixel
+                            img.setAttribute('src', opensLink);
+                            trackingPixelFound = true;
                         }
                     });
 
-                    // Handle style tags with background images
-                    const styleTags = tempDiv.querySelectorAll('style');
+                    // If no tracking pixel found, add one
+                    if (!trackingPixelFound) {
+                        const body = doc.querySelector('body');
+                        if (body) {
+                            const trackingPixel = doc.createElement('img');
+                            trackingPixel.setAttribute('src', opensLink);
+                            trackingPixel.setAttribute('alt', '');
+                            trackingPixel.setAttribute('width', '1');
+                            trackingPixel.setAttribute('height', '1');
+                            trackingPixel.setAttribute('style', 'display:none; width:1px; height:1px;');
+                            body.appendChild(trackingPixel);
+                        }
+                    }
+                }
+
+                // 3. Clean attributes if checked
+                if (cleanAttributes) {
+                    // Process href attributes
+                    const hrefs = doc.querySelectorAll('[href]');
+                    hrefs.forEach(el => {
+                        // Skip elements in head
+                        if (head && head.contains(el)) return;
+
+                        // Empty the href attribute
+                        el.setAttribute('href', '');
+                    });
+
+                    // Process src attributes (except tracking pixels)
+                    const srcs = doc.querySelectorAll('[src]');
+                    srcs.forEach(el => {
+                        // Skip elements in head
+                        if (head && head.contains(el)) return;
+
+                        // Skip tracking pixels
+                        if (el.tagName === 'IMG' && isTrackingPixel(el)) return;
+
+                        // Empty the src attribute
+                        el.setAttribute('src', '');
+                    });
+
+                    // Process alt attributes
+                    const alts = doc.querySelectorAll('[alt]');
+                    alts.forEach(el => {
+                        // Skip elements in head
+                        if (head && head.contains(el)) return;
+
+                        // Empty the alt attribute
+                        el.setAttribute('alt', '');
+                    });
+
+                    // Process inline styles with background images
+                    const elementsWithStyle = doc.querySelectorAll('[style*="background"]');
+                    elementsWithStyle.forEach(el => {
+                        // Skip elements in head
+                        if (head && head.contains(el)) return;
+
+                        if (el.getAttribute('style')) {
+                            // Remove url() patterns in inline styles
+                            el.setAttribute('style', el.getAttribute('style')
+                                .replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'url("")')
+                                .replace(/background-image:[^;]+;/g, 'background-image: none;'));
+                        }
+                    });
+
+                    // Process style tags with background images
+                    const styleTags = doc.querySelectorAll('style');
                     styleTags.forEach(styleTag => {
+                        // Skip style tags in head
+                        if (head && head.contains(styleTag)) return;
+
                         if (styleTag.textContent) {
                             // Replace url() patterns in CSS
-                            styleTag.textContent = styleTag.textContent.replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'none');
-                        }
-                    });
-
-                    // Also process inline styles with background images
-                    const elementsWithStyle = tempDiv.querySelectorAll('[style*="background"]');
-                    elementsWithStyle.forEach(el => {
-                        if (el.getAttribute('style')) {
-                            el.setAttribute('style', el.getAttribute('style')
-                                .replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'none')
-                                .replace(/background-image:[^;]+;/g, 'background-image: none;'));
+                            styleTag.textContent = styleTag.textContent.replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'url("")');
                         }
                     });
                 }
 
+                // 4. Hide images if checked (except tracking pixels)
+                if (hideImages) {
+                    const images = doc.querySelectorAll('img');
+                    images.forEach(img => {
+                        // Skip elements in head
+                        if (head && head.contains(img)) return;
+
+                        // Skip tracking pixels
+                        if (isTrackingPixel(img)) return;
+
+                        // Add display:none style
+                        const currentStyle = img.getAttribute('style') || '';
+                        img.setAttribute('style', currentStyle + '; display: none !important;');
+                    });
+                }
+
+                // 5. Remove visible text if checked
+                if (removeText) {
+                    // Function to recursively process text nodes
+                    function processTextNodes(node) {
+                        if (node.nodeType === Node.TEXT_NODE) {
+                            // Skip if parent is script or style
+                            const parentTag = node.parentNode.tagName;
+                            if (parentTag === 'SCRIPT' || parentTag === 'STYLE') return;
+
+                            // Skip if in head
+                            if (head && head.contains(node)) return;
+
+                            // Replace text with empty string
+                            node.textContent = '';
+                        } else {
+                            // Process child nodes
+                            for (let i = 0; i < node.childNodes.length; i++) {
+                                processTextNodes(node.childNodes[i]);
+                            }
+                        }
+                    }
+
+                    // Start processing from body
+                    const body = doc.querySelector('body');
+                    if (body) {
+                        processTextNodes(body);
+                    }
+                }
+
+                // 6. Clean URLs in comments if checked
+                if (cleanComments) {
+                    // Create a node iterator to find all comments
+                    const commentIterator = doc.createNodeIterator(
+                        doc.documentElement,
+                        NodeFilter.SHOW_COMMENT,
+                        null,
+                        false
+                    );
+
+                    // Process each comment
+                    let commentNode;
+                    while ((commentNode = commentIterator.nextNode())) {
+                        // Skip comments in head
+                        if (head && head.contains(commentNode)) continue;
+
+                        // Clean URLs in comment text
+                        let commentText = commentNode.textContent;
+
+                        // Replace URLs in comments
+                        commentText = commentText.replace(/https?:\/\/[^\s'"]+/g, '');
+                        commentText = commentText.replace(/www\.[^\s'"]+/g, '');
+                        commentText = commentText.replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'url("")');
+
+                        // Update comment
+                        commentNode.textContent = commentText;
+                    }
+                }
+
+                // Get the modified HTML
+                const modifiedHtml = doc.documentElement.outerHTML;
+
                 // Update the output
-                htmlOutput.value = tempDiv.innerHTML;
+                htmlOutput.value = modifiedHtml;
 
                 // Show success message
                 statusMessage.textContent = "Changes applied successfully!";
@@ -1086,23 +1293,37 @@
 
             // Event listeners
             htmlInput.addEventListener('input', analyzeHtml);
-            changeButton.addEventListener('click', applyChanges);
+            applyButton.addEventListener('click', applyChanges);
             copyButton.addEventListener('click', copyToClipboard);
 
             // Add sample HTML for testing
-            const sampleHtml = `<div>
-  <h1>Welcome to our Newsletter</h1>
-  <p>Check out our <a href="https://example.com/click/product123">latest product</a>!</p>
-  <img src="https://example.com/product-image.jpg" alt="Product" width="300" height="200" border="1">
-  <p>Learn more about our <a href="https://example.com/track/offer">special offers</a>.</p>
-  <div style="background-image: url('https://example.com/background.jpg'); padding: 20px;">
-    <p>This has a background image</p>
+            const sampleHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sample Newsletter</title>
+  <link href="https://example.com/styles.css" rel="stylesheet">
+</head>
+<body>
+  <div>
+    <h1>Welcome to our Newsletter</h1>
+    <!-- Product link: https://example.com/product-details -->
+    <p>Check out our <a href="https://example.com/click/product123">latest product</a>!</p>
+    <img src="https://example.com/product-image.jpg" alt="Product" width="300" height="200">
+    <p>Learn more about our <a href="https://example.com/track/offer">special offers</a>.</p>
+    <div style="background-image: url('https://example.com/background.jpg'); padding: 20px;">
+      <p>This has a background image</p>
+    </div>
+    <!-- Tracking pixel -->
+    <img src="https://example.com/track/open.gif" alt="" width="1" height="1" style="display:none;">
+    <div class="footer">
+      <p><a href="https://example.com/optout">Opt-out from marketing emails</a></p>
+      <p><a href="https://example.com/unsubscribe">Unsubscribe</a> from all communications</p>
+    </div>
   </div>
-  <div class="footer">
-    <p><a href="https://example.com/optout">Opt-out from marketing emails</a></p>
-    <p><a href="https://example.com/unsubscribe">Unsubscribe</a> from all communications</p>
-  </div>
-</div>`;
+</body>
+</html>`;
 
             htmlInput.value = sampleHtml;
             analyzeHtml();
