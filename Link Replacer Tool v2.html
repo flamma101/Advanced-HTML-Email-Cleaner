@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en" data-arp="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Replacer Tool</title>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        }
+
+        .code-font {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+    <style>
+        *,
+        ::before,
+        ::after {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            --tw-contain-size: ;
+            --tw-contain-layout: ;
+            --tw-contain-paint: ;
+            --tw-contain-style:
+        }
+
+        ::backdrop {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            --tw-contain-size: ;
+            --tw-contain-layout: ;
+            --tw-contain-paint: ;
+            --tw-contain-style:
+        }
+
+        /* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */
+        *,
+        ::after,
+        ::before {
+            box-sizing: border-box;
+            border-width: 0;
+            border-style: solid;
+            border-color: #e5e7eb
+        }
+
+        ::after,
+        ::before {
+            --tw-content: ''
+        }
+
+        :host,
+        html {
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            -moz-tab-size: 4;
+            tab-size: 4;
+            font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        body {
+            margin: 0;
+            line-height: inherit
+        }
+
+        hr {
+            height: 0;
+            color: inherit;
+            border-top-width: 1px
+        }
+
+        abbr:where([title]) {
+            -webkit-text-decoration: underline dotted;
+            text-decoration: underline dotted
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-size: inherit;
+            font-weight: inherit
+        }
+
+        a {
+            color: inherit;
+            text-decoration: inherit
+        }
+
+        b,
+        strong {
+            font-weight: bolder
+        }
+
+        code,
+        kbd,
+        pre,
+        samp {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            font-size: 1em
+        }
+
+        small {
+            font-size: 80%
+        }
+
+        sub,
+        sup {
+            font-size: 75%;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline
+        }
+
+        sub {
+            bottom: -.25em
+        }
+
+        sup {
+            top: -.5em
+        }
+
+        table {
+            text-indent: 0;
+            border-color: inherit;
+            border-collapse: collapse
+        }
+
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            font-family: inherit;
+            font-feature-settings: inherit;
+            font-variation-settings: inherit;
+            font-size: 100%;
+            font-weight: inherit;
+            line-height: inherit;
+            letter-spacing: inherit;
+            color: inherit;
+            margin: 0;
+            padding: 0
+        }
+
+        button,
+        select {
+            text-transform: none
+        }
+
+        button,
+        input:where([type=button]),
+        input:where([type=reset]),
+        input:where([type=submit]) {
+            -webkit-appearance: button;
+            background-color: transparent;
+            background-image: none
+        }
+
+        :-moz-focusring {
+            outline: auto
+        }
+
+        :-moz-ui-invalid {
+            box-shadow: none
+        }
+
+        progress {
+            vertical-align: baseline
+        }
+
+        ::-webkit-inner-spin-button,
+        ::-webkit-outer-spin-button {
+            height: auto
+        }
+
+        [type=search] {
+            -webkit-appearance: textfield;
+            outline-offset: -2px
+        }
+
+        ::-webkit-search-decoration {
+            -webkit-appearance: none
+        }
+
+        ::-webkit-file-upload-button {
+            -webkit-appearance: button;
+            font: inherit
+        }
+
+        summary {
+            display: list-item
+        }
+
+        blockquote,
+        dd,
+        dl,
+        figure,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        hr,
+        p,
+        pre {
+            margin: 0
+        }
+
+        fieldset {
+            margin: 0;
+            padding: 0
+        }
+
+        legend {
+            padding: 0
+        }
+
+        menu,
+        ol,
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0
+        }
+
+        dialog {
+            padding: 0
+        }
+
+        textarea {
+            resize: vertical
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            opacity: 1;
+            color: #9ca3af
+        }
+
+        [role=button],
+        button {
+            cursor: pointer
+        }
+
+        :disabled {
+            cursor: default
+        }
+
+        audio,
+        canvas,
+        embed,
+        iframe,
+        img,
+        object,
+        svg,
+        video {
+            display: block;
+            vertical-align: middle
+        }
+
+        img,
+        video {
+            max-width: 100%;
+            height: auto
+        }
+
+        [hidden]:where(:not([hidden=until-found])) {
+            display: none
+        }
+
+        .container {
+            width: 100%
+        }
+
+        @media (min-width: 640px) {
+            .container {
+                max-width: 640px
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 768px
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1024px
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .container {
+                max-width: 1280px
+            }
+        }
+
+        @media (min-width: 1536px) {
+            .container {
+                max-width: 1536px
+            }
+        }
+
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto
+        }
+
+        .mb-1 {
+            margin-bottom: 0.25rem
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem
+        }
+
+        .mb-3 {
+            margin-bottom: 0.75rem
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem
+        }
+
+        .mb-8 {
+            margin-bottom: 2rem
+        }
+
+        .ml-2 {
+            margin-left: 0.5rem
+        }
+
+        .mr-2 {
+            margin-right: 0.5rem
+        }
+
+        .mt-3 {
+            margin-top: 0.75rem
+        }
+
+        .mt-6 {
+            margin-top: 1.5rem
+        }
+
+        .mt-8 {
+            margin-top: 2rem
+        }
+
+        .block {
+            display: block
+        }
+
+        .inline-block {
+            display: inline-block
+        }
+
+        .flex {
+            display: flex
+        }
+
+        .grid {
+            display: grid
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .h-5 {
+            height: 1.25rem
+        }
+
+        .h-80 {
+            height: 20rem
+        }
+
+        .min-h-screen {
+            min-height: 100vh
+        }
+
+        .w-5 {
+            width: 1.25rem
+        }
+
+        .w-full {
+            width: 100%
+        }
+
+        .max-w-6xl {
+            max-width: 72rem
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr))
+        }
+
+        .items-center {
+            align-items: center
+        }
+
+        .justify-center {
+            justify-content: center
+        }
+
+        .justify-between {
+            justify-content: space-between
+        }
+
+        .gap-6 {
+            gap: 1.5rem
+        }
+
+        .space-y-2> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(0.5rem * var(--tw-space-y-reverse))
+        }
+
+        .space-y-5> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(1.25rem * var(--tw-space-y-reverse))
+        }
+
+        .rounded {
+            border-radius: 0.25rem
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem
+        }
+
+        .rounded-xl {
+            border-radius: 0.75rem
+        }
+
+        .border {
+            border-width: 1px
+        }
+
+        .border-t {
+            border-top-width: 1px
+        }
+
+        .border-gray-200 {
+            --tw-border-opacity: 1;
+            border-color: rgb(229 231 235 / var(--tw-border-opacity, 1))
+        }
+
+        .border-gray-300 {
+            --tw-border-opacity: 1;
+            border-color: rgb(209 213 219 / var(--tw-border-opacity, 1))
+        }
+
+        .bg-gray-50 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-gray-600 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(75 85 99 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-indigo-600 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(79 70 229 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-white {
+            --tw-bg-opacity: 1;
+            background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1))
+        }
+
+        .p-3 {
+            padding: 0.75rem
+        }
+
+        .p-4 {
+            padding: 1rem
+        }
+
+        .p-6 {
+            padding: 1.5rem
+        }
+
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem
+        }
+
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem
+        }
+
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem
+        }
+
+        .py-8 {
+            padding-top: 2rem;
+            padding-bottom: 2rem
+        }
+
+        .pt-2 {
+            padding-top: 0.5rem
+        }
+
+        .pt-6 {
+            padding-top: 1.5rem
+        }
+
+        .text-center {
+            text-align: center
+        }
+
+        .text-3xl {
+            font-size: 1.875rem;
+            line-height: 2.25rem
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+            line-height: 1.75rem
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem
+        }
+
+        .text-xs {
+            font-size: 0.75rem;
+            line-height: 1rem
+        }
+
+        .font-bold {
+            font-weight: 700
+        }
+
+        .font-medium {
+            font-weight: 500
+        }
+
+        .font-semibold {
+            font-weight: 600
+        }
+
+        .text-gray-500 {
+            --tw-text-opacity: 1;
+            color: rgb(107 114 128 / var(--tw-text-opacity, 1))
+        }
+
+        .text-gray-600 {
+            --tw-text-opacity: 1;
+            color: rgb(75 85 99 / var(--tw-text-opacity, 1))
+        }
+
+        .text-gray-700 {
+            --tw-text-opacity: 1;
+            color: rgb(55 65 81 / var(--tw-text-opacity, 1))
+        }
+
+        .text-gray-800 {
+            --tw-text-opacity: 1;
+            color: rgb(31 41 55 / var(--tw-text-opacity, 1))
+        }
+
+        .text-green-600 {
+            --tw-text-opacity: 1;
+            color: rgb(22 163 74 / var(--tw-text-opacity, 1))
+        }
+
+        .text-indigo-600 {
+            --tw-text-opacity: 1;
+            color: rgb(79 70 229 / var(--tw-text-opacity, 1))
+        }
+
+        .text-white {
+            --tw-text-opacity: 1;
+            color: rgb(255 255 255 / var(--tw-text-opacity, 1))
+        }
+
+        .shadow-lg {
+            --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+        }
+
+        .shadow-md {
+            --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+        }
+
+        .transition {
+            transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms
+        }
+
+        .duration-200 {
+            transition-duration: 200ms
+        }
+
+        .hover\:bg-gray-700:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1))
+        }
+
+        .hover\:bg-indigo-700:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(67 56 202 / var(--tw-bg-opacity, 1))
+        }
+
+        .focus\:border-indigo-500:focus {
+            --tw-border-opacity: 1;
+            border-color: rgb(99 102 241 / var(--tw-border-opacity, 1))
+        }
+
+        .focus\:ring-2:focus {
+            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+        }
+
+        .focus\:ring-indigo-500:focus {
+            --tw-ring-opacity: 1;
+            --tw-ring-color: rgb(99 102 241 / var(--tw-ring-opacity, 1))
+        }
+
+        @media (min-width: 1024px) {
+            .lg\:col-span-2 {
+                grid-column: span 2 / span 2
+            }
+
+            .lg\:grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr))
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <header class="text-center mb-8">
+            <div class="gradient-bg inline-block px-4 py-2 rounded-lg shadow-lg">
+                <h1 class="text-3xl font-bold text-white">HTML Link Replacer</h1>
+            </div>
+            <p class="text-gray-600 mt-3">Replace links and remove image URLs in your HTML with one click</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left panel: HTML input -->
+            <div class="lg:col-span-2 bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">Original HTML</h2>
+                <textarea id="htmlInput"
+                    class="w-full h-80 p-4 border border-gray-300 rounded-lg code-font text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Paste your HTML code here..."></textarea>
+            </div>
+
+            <!-- Right panel: Link inputs and controls -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">New Links</h2>
+
+                <div class="space-y-5">
+                    <div>
+                        <label for="clickLink" class="block text-sm font-medium text-gray-700 mb-1">Click Link</label>
+                        <input type="text" id="clickLink"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            placeholder="https://example.com/click">
+                    </div>
+
+                    <div>
+                        <label for="optOutLink" class="block text-sm font-medium text-gray-700 mb-1">Opt-Out
+                            Link</label>
+                        <input type="text" id="optOutLink"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            placeholder="https://example.com/opt-out">
+                    </div>
+
+                    <div>
+                        <label for="unsubscribeLink" class="block text-sm font-medium text-gray-700 mb-1">Unsubscribe
+                            Link</label>
+                        <input type="text" id="unsubscribeLink"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            placeholder="https://example.com/unsubscribe">
+                    </div>
+
+                    <div class="pt-2">
+                        <div class="flex items-center mb-3">
+                            <input id="removeImages" type="checkbox"
+                                class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                            <label for="removeImages" class="ml-2 block text-sm font-medium text-gray-700">
+                                Remove all image URLs
+                            </label>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-3">Removes URLs from img src attributes, clears alt text,
+                            sets border to 0, and removes CSS background images</p>
+                    </div>
+
+                    <div class="pt-2">
+                        <button id="changeButton"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                </path>
+                            </svg>
+                            Apply Changes
+                        </button>
+                    </div>
+
+                    <div class="pt-2">
+                        <button id="copyButton"
+                            class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            Copy Modified HTML
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-800 mb-2">Content Detection</h3>
+                    <div id="linkStats" class="text-sm text-gray-600 space-y-2">
+                        <p>Click links: <span id="clickCount" class="font-semibold">2</span></p>
+                        <p>Opt-out links: <span id="optOutCount" class="font-semibold">1</span></p>
+                        <p>Unsubscribe links: <span id="unsubCount" class="font-semibold">1</span></p>
+                        <p>Images: <span id="imageCount" class="font-semibold">2</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results section -->
+        <div class="mt-8 bg-white rounded-xl shadow-md p-6">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-xl font-semibold text-gray-800">Modified HTML</h2>
+                <div id="statusMessage" class="text-sm font-medium text-green-600 hidden">
+                    Changes applied successfully!
+                </div>
+            </div>
+            <textarea id="htmlOutput"
+                class="w-full h-80 p-4 border border-gray-300 rounded-lg code-font text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Modified HTML will appear here..." readonly=""></textarea>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const htmlInput = document.getElementById('htmlInput');
+            const htmlOutput = document.getElementById('htmlOutput');
+            const clickLinkInput = document.getElementById('clickLink');
+            const optOutLinkInput = document.getElementById('optOutLink');
+            const unsubLinkInput = document.getElementById('unsubscribeLink');
+            const removeImagesCheckbox = document.getElementById('removeImages');
+            const changeButton = document.getElementById('changeButton');
+            const copyButton = document.getElementById('copyButton');
+            const statusMessage = document.getElementById('statusMessage');
+            const clickCount = document.getElementById('clickCount');
+            const optOutCount = document.getElementById('optOutCount');
+            const unsubCount = document.getElementById('unsubCount');
+            const imageCount = document.getElementById('imageCount');
+
+            // Function to analyze HTML and count links and images
+            function analyzeHtml() {
+                const html = htmlInput.value;
+                if (!html) return;
+
+                // Create a temporary DOM element to parse the HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+
+                // Find all links
+                const links = tempDiv.querySelectorAll('a');
+
+                // Initialize counters
+                let clicks = 0;
+                let optOuts = 0;
+                let unsubs = 0;
+
+                // Check each link
+                links.forEach(link => {
+                    const href = link.getAttribute('href');
+                    const text = link.textContent.toLowerCase();
+
+                    if (!href) return;
+
+                    // Check for click links (typically these are product links or CTAs)
+                    if ((href.includes('/click') ||
+                        href.includes('track') ||
+                        text.includes('click') ||
+                        text.includes('buy') ||
+                        text.includes('shop') ||
+                        text.includes('learn more')) &&
+                        !text.includes('unsubscribe') &&
+                        !text.includes('opt')) {
+                        clicks++;
+                    }
+
+                    // Check for opt-out links
+                    else if (href.includes('opt') ||
+                        text.includes('opt out') ||
+                        text.includes('opt-out')) {
+                        optOuts++;
+                    }
+
+                    // Check for unsubscribe links
+                    else if (href.includes('unsub') ||
+                        text.includes('unsub') ||
+                        text.includes('remove me')) {
+                        unsubs++;
+                    }
+                });
+
+                // Count images
+                const images = tempDiv.querySelectorAll('img');
+                const imgCount = images.length;
+
+                // Count background images in inline styles
+                const elementsWithStyle = tempDiv.querySelectorAll('[style*="background"]');
+                let bgImageCount = 0;
+                elementsWithStyle.forEach(el => {
+                    if (el.style.backgroundImage && el.style.backgroundImage.includes('url(')) {
+                        bgImageCount++;
+                    }
+                });
+
+                // Update the UI
+                clickCount.textContent = clicks;
+                optOutCount.textContent = optOuts;
+                unsubCount.textContent = unsubs;
+                imageCount.textContent = imgCount + bgImageCount;
+            }
+
+            // Function to replace links and optionally remove image URLs
+            function applyChanges() {
+                const html = htmlInput.value;
+                const clickLink = clickLinkInput.value;
+                const optOutLink = optOutLinkInput.value;
+                const unsubLink = unsubLinkInput.value;
+                const removeImages = removeImagesCheckbox.checked;
+
+                if (!html) {
+                    alert('Please paste some HTML first');
+                    return;
+                }
+
+                // Create a temporary DOM element to parse the HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+
+                // Find all links
+                const links = tempDiv.querySelectorAll('a');
+
+                // Replace links based on their content/purpose
+                links.forEach(link => {
+                    const href = link.getAttribute('href');
+                    const text = link.textContent.toLowerCase();
+
+                    if (!href) return;
+
+                    // Replace click links
+                    if ((href.includes('/click') ||
+                        href.includes('track') ||
+                        text.includes('click') ||
+                        text.includes('buy') ||
+                        text.includes('shop') ||
+                        text.includes('learn more')) &&
+                        !text.includes('unsubscribe') &&
+                        !text.includes('opt')) {
+                        if (clickLink) link.setAttribute('href', clickLink);
+                    }
+
+                    // Replace opt-out links
+                    else if (href.includes('opt') ||
+                        text.includes('opt out') ||
+                        text.includes('opt-out')) {
+                        if (optOutLink) link.setAttribute('href', optOutLink);
+                    }
+
+                    // Replace unsubscribe links
+                    else if (href.includes('unsub') ||
+                        text.includes('unsub') ||
+                        text.includes('remove me')) {
+                        if (unsubLink) link.setAttribute('href', unsubLink);
+                    }
+                });
+
+                // Remove image URLs if checkbox is checked
+                if (removeImages) {
+                    // Handle img tags
+                    const images = tempDiv.querySelectorAll('img');
+                    images.forEach(img => {
+                        // Remove src attribute
+                        img.removeAttribute('src');
+                        img.removeAttribute('srcset');
+
+                        // Clear alt text
+                        img.setAttribute('alt', '');
+
+                        // Set border to 0
+                        img.setAttribute('border', '0');
+
+                        // Make image completely invisible
+                        img.style.display = 'none';
+                        img.style.visibility = 'hidden';
+                        img.style.width = '0';
+                        img.style.height = '0';
+                    });
+
+                    // Handle inline background images
+                    const allElements = tempDiv.querySelectorAll('*');
+                    allElements.forEach(el => {
+                        if (el.style && el.style.backgroundImage && el.style.backgroundImage.includes('url(')) {
+                            el.style.backgroundImage = 'none';
+                        }
+                    });
+
+                    // Handle style tags with background images
+                    const styleTags = tempDiv.querySelectorAll('style');
+                    styleTags.forEach(styleTag => {
+                        if (styleTag.textContent) {
+                            // Replace url() patterns in CSS
+                            styleTag.textContent = styleTag.textContent.replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'none');
+                        }
+                    });
+
+                    // Also process inline styles with background images
+                    const elementsWithStyle = tempDiv.querySelectorAll('[style*="background"]');
+                    elementsWithStyle.forEach(el => {
+                        if (el.getAttribute('style')) {
+                            el.setAttribute('style', el.getAttribute('style')
+                                .replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'none')
+                                .replace(/background-image:[^;]+;/g, 'background-image: none;'));
+                        }
+                    });
+                }
+
+                // Update the output
+                htmlOutput.value = tempDiv.innerHTML;
+
+                // Show success message
+                statusMessage.textContent = "Changes applied successfully!";
+                statusMessage.classList.remove('hidden');
+                setTimeout(() => {
+                    statusMessage.classList.add('hidden');
+                }, 3000);
+            }
+
+            // Function to copy the modified HTML to clipboard
+            function copyToClipboard() {
+                if (!htmlOutput.value) {
+                    alert('No modified HTML to copy');
+                    return;
+                }
+
+                htmlOutput.select();
+                document.execCommand('copy');
+
+                // Change button text temporarily
+                const originalText = copyButton.innerHTML;
+                copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Copied!';
+
+                setTimeout(() => {
+                    copyButton.innerHTML = originalText;
+                }, 2000);
+            }
+
+            // Event listeners
+            htmlInput.addEventListener('input', analyzeHtml);
+            changeButton.addEventListener('click', applyChanges);
+            copyButton.addEventListener('click', copyToClipboard);
+
+            // Add sample HTML for testing
+            const sampleHtml = `<div>
+  <h1>Welcome to our Newsletter</h1>
+  <p>Check out our <a href="https://example.com/click/product123">latest product</a>!</p>
+  <img src="https://example.com/product-image.jpg" alt="Product" width="300" height="200" border="1">
+  <p>Learn more about our <a href="https://example.com/track/offer">special offers</a>.</p>
+  <div style="background-image: url('https://example.com/background.jpg'); padding: 20px;">
+    <p>This has a background image</p>
+  </div>
+  <div class="footer">
+    <p><a href="https://example.com/optout">Opt-out from marketing emails</a></p>
+    <p><a href="https://example.com/unsubscribe">Unsubscribe</a> from all communications</p>
+  </div>
+</div>`;
+
+            htmlInput.value = sampleHtml;
+            analyzeHtml();
+        });
+    </script>
+    <footer class="text-center text-gray-600 mt-8 mb-4">
+        Made with ❤ by Flamma.
+    </footer>
+</body>
+
+</html>
