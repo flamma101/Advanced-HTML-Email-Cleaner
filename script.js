@@ -13,8 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const applyButton = document.getElementById('applyButton');
   const copyButton = document.getElementById('copyButton');
   const downloadButton = document.getElementById('downloadButton');
-  const undoButton = document.getElementById('undoButton');
-  const resetButton = document.getElementById('resetButton');
   const statusMessage = document.getElementById('statusMessage');
   const clickCount = document.getElementById('clickCount');
   const optOutCount = document.getElementById('optOutCount');
@@ -23,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const trackingCount = document.getElementById('trackingCount');
   const commentCount = document.getElementById('commentCount');
 
-  let lastHtmlState = ''; // for undo
+  let lastHtmlState = ''; // for potential future modifications
 
   // Helper functions to extract and reassemble the head content
   function extractHeadAndBody(html) {
@@ -131,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
       alert('Please paste some HTML first');
       return;
     }
-    // Save state for undo
+    // Save state for potential future use
     lastHtmlState = htmlOutput.value || html;
 
     let modifiedHtml = html;
@@ -321,49 +319,9 @@ document.addEventListener('DOMContentLoaded', function () {
     URL.revokeObjectURL(url);
   }
 
-  // Function to undo changes (restore previous state)
-  function undoChanges() {
-    if (lastHtmlState) {
-      htmlOutput.value = lastHtmlState;
-      statusMessage.textContent = "Undone!";
-      statusMessage.classList.remove('hidden');
-      setTimeout(() => {
-        statusMessage.classList.add('hidden');
-      }, 3000);
-    }
-  }
-
-  // Function to reset all fields
-  function resetAll() {
-    htmlInput.value = '';
-    htmlOutput.value = '';
-    clickLinkInput.value = '';
-    optOutLinkInput.value = '';
-    unsubLinkInput.value = '';
-    opensLinkInput.value = '';
-    cleanAttributesCheckbox.checked = false;
-    hideImagesCheckbox.checked = false;
-    removeTextCheckbox.checked = false;
-    cleanCommentsCheckbox.checked = false;
-    removeStylesCheckbox.checked = false;
-    clickCount.textContent = '0';
-    optOutCount.textContent = '0';
-    unsubCount.textContent = '0';
-    imageCount.textContent = '0';
-    trackingCount.textContent = '0';
-    commentCount.textContent = '0';
-    statusMessage.textContent = "Cleared";
-    statusMessage.classList.remove('hidden');
-    setTimeout(() => {
-      statusMessage.classList.add('hidden');
-    }, 2000);
-  }
-
   applyButton.addEventListener('click', applyChanges);
   copyButton.addEventListener('click', copyToClipboard);
   downloadButton.addEventListener('click', downloadModifiedHtml);
-  undoButton.addEventListener('click', undoChanges);
-  resetButton.addEventListener('click', resetAll);
 
   // Load sample HTML and analyze it
   const sampleHtml = `<!DOCTYPE html>

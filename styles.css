@@ -132,7 +132,6 @@ input[type="checkbox"] {
 
 input[type="radio"] {
   accent-color: #4f46e5;
-  /* Tailwind Indigo-600 */
   width: 1.25rem;
   height: 1.25rem;
   margin-right: 0.5rem;
