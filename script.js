@@ -76,13 +76,17 @@ document.addEventListener('DOMContentLoaded', function () {
       const href = link.getAttribute('href');
       const text = link.textContent.toLowerCase();
       if (!href) return;
-      if ((href.includes('/click') || href.includes('track') || text.includes('click') || text.includes('buy') || text.includes('shop') || text.includes('learn more')) &&
-          !text.includes('unsubscribe') && !text.includes('opt')) {
-        clicks++;
-      } else if (href.includes('opt') || text.includes('opt out') || text.includes('opt-out')) {
+      if (
+        (href.includes('/opt') || text.includes('opt out') || text.includes('opt-out'))
+      ) {
         optOuts++;
-      } else if (href.includes('unsub') || text.includes('unsub') || text.includes('remove me')) {
+      } else if (
+        (href.includes('unsub') || text.includes('unsub') || text.includes('remove me'))
+      ) {
         unsubs++;
+      } else {
+        // If not opt-out or unsubscribe, count as click link
+        clicks++;
       }
     });
 
@@ -150,13 +154,17 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!href) return;
         const text = link.textContent.toLowerCase();
         let newHref = null;
+        // Recognize by keywords
         if ((href.includes('/click') || href.includes('track') || text.includes('click') || text.includes('buy') || text.includes('shop') || text.includes('learn more')) &&
-            !text.includes('unsubscribe') && !text.includes('opt')) {
+          !text.includes('unsubscribe') && !text.includes('opt')) {
           if (clickLink) newHref = clickLink;
         } else if (href.includes('opt') || text.includes('opt out') || text.includes('opt-out')) {
           if (optOutLink) newHref = optOutLink;
         } else if (href.includes('unsub') || text.includes('unsub') || text.includes('remove me')) {
           if (unsubLink) newHref = unsubLink;
+        } else {
+          // If not recognized, treat as click link if provided
+          if (clickLink) newHref = clickLink;
         }
         if (newHref) {
           const hrefRegex = new RegExp(`href=["']${escapeRegExp(href)}["']`, 'g');
@@ -259,8 +267,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (cleanCommentsCheckbox.checked) {
       modifiedHtml = modifiedHtml.replace(/<!--[\s\S]*?-->/g, (comment) => {
         return comment.replace(/https?:\/\/[^\s'"]+/g, '')
-                      .replace(/www\.[^\s'"]+/g, '')
-                      .replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'url("")');
+          .replace(/www\.[^\s'"]+/g, '')
+          .replace(/url\(['"]?[^'")\s]+['"]?\)/g, 'url("")');
       });
     }
 
@@ -351,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 </body>
 </html>`;
-  
+
   htmlInput.value = sampleHtml;
   analyzeHtml();
 });

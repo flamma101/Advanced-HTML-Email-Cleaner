@@ -24,8 +24,10 @@
             <!-- Left panel: HTML input and Content Detection -->
             <div class="lg:col-span-2 bg-white rounded-xl shadow-md p-6">
                 <h2 class="text-xl font-semibold text-gray-800 mb-3">Original HTML</h2>
-                <textarea id="htmlInput" class="w-full h-80 p-4 border border-gray-300 rounded-lg code-font text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Paste your HTML code here..."></textarea>
-                
+                <textarea id="htmlInput"
+                    class="w-full h-80 p-4 border border-gray-300 rounded-lg code-font text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Paste your HTML code here..."></textarea>
+
                 <!-- Moved Content Detection section under Original HTML -->
                 <div class="mt-6 pt-6 border-t border-gray-200">
                     <h3 class="text-lg font-medium text-gray-800 mb-2">Content Detection</h3>
@@ -48,55 +50,71 @@
                 <div class="space-y-4 mb-4">
                     <div>
                         <label for="clickLink" class="block text-gray-700">Click Link URL:</label>
-                        <input type="text" id="clickLink" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500" placeholder="Enter replacement click URL" aria-label="Click Link URL">
+                        <input type="text" id="clickLink"
+                            class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500"
+                            placeholder="Enter replacement click URL" aria-label="Click Link URL">
                     </div>
                     <div>
                         <label for="optOutLink" class="block text-gray-700">Opt-Out Link URL:</label>
-                        <input type="text" id="optOutLink" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500" placeholder="Enter opt-out URL" aria-label="Opt-Out Link URL">
+                        <input type="text" id="optOutLink"
+                            class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500"
+                            placeholder="Enter opt-out URL" aria-label="Opt-Out Link URL">
                     </div>
                     <div>
                         <label for="unsubscribeLink" class="block text-gray-700">Unsubscribe Link URL:</label>
-                        <input type="text" id="unsubscribeLink" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500" placeholder="Enter unsubscribe URL" aria-label="Unsubscribe Link URL">
+                        <input type="text" id="unsubscribeLink"
+                            class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500"
+                            placeholder="Enter unsubscribe URL" aria-label="Unsubscribe Link URL">
                     </div>
                     <div>
                         <label for="opensLink" class="block text-gray-700">Opens Tracking URL:</label>
-                        <input type="text" id="opensLink" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500" placeholder="Enter opens tracking URL" aria-label="Opens Tracking URL">
+                        <input type="text" id="opensLink"
+                            class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500"
+                            placeholder="Enter opens tracking URL" aria-label="Opens Tracking URL">
                     </div>
                 </div>
 
                 <!-- Checkboxes for cleaning options -->
                 <div class="space-y-3 mb-4">
                     <div class="flex items-center">
-                        <input type="checkbox" id="cleanAttributes" class="mr-2 accent-indigo-600 focus:outline-none" checked>
+                        <input type="checkbox" id="cleanAttributes" class="mr-2 accent-indigo-600 focus:outline-none"
+                            checked>
                         <label for="cleanAttributes" class="text-gray-700 font-medium">Clean Attributes</label>
                     </div>
                     <div class="flex items-center">
-                        <input type="checkbox" id="hideImages" class="mr-2 accent-indigo-600 focus:outline-none" checked>
+                        <input type="checkbox" id="hideImages" class="mr-2 accent-indigo-600 focus:outline-none"
+                            checked>
                         <label for="hideImages" class="text-gray-700 font-medium">Hide Images</label>
                     </div>
                     <div class="flex items-center">
-                        <input type="checkbox" id="removeText" class="mr-2 accent-indigo-600 focus:outline-none" checked>
+                        <input type="checkbox" id="removeText" class="mr-2 accent-indigo-600 focus:outline-none"
+                            checked>
                         <label for="removeText" class="text-gray-700 font-medium">Remove Visible Text</label>
                     </div>
                     <div class="flex items-center">
-                        <input type="checkbox" id="cleanComments" class="mr-2 accent-indigo-600 focus:outline-none" checked>
+                        <input type="checkbox" id="cleanComments" class="mr-2 accent-indigo-600 focus:outline-none"
+                            checked>
                         <label for="cleanComments" class="text-gray-700 font-medium">Clean Comments URLs</label>
                     </div>
                     <div class="flex items-center">
-                        <input type="checkbox" id="removeStyles" class="mr-2 accent-indigo-600 focus:outline-none" checked>
+                        <input type="checkbox" id="removeStyles" class="mr-2 accent-indigo-600 focus:outline-none"
+                            checked>
                         <label for="removeStyles" class="text-gray-700 font-medium">Remove Styles</label>
                     </div>
                 </div>
 
                 <!-- Action buttons (Undo and Reset removed) -->
                 <div class="space-y-2 pt-2">
-                    <button id="applyButton" aria-label="Apply Changes" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center focus:outline-none">
+                    <button id="applyButton" aria-label="Apply Changes"
+                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center focus:outline-none">
                         Apply Changes
                     </button>
-                    <button id="copyButton" aria-label="Copy Modified HTML" class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center focus:outline-none">
+                    <button id="copyButton" aria-label="Copy Modified HTML"
+                        class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center focus:outline-none">
                         Copy Modified HTML
                     </button>
-                    <button id="downloadButton" aria-label="Download Modified HTML" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center focus:outline-none">
+                    <button id="downloadButton" aria-label="Download Modified HTML"
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center focus:outline-none">
                         Download Modified HTML
                     </button>
                 </div>
@@ -111,7 +129,9 @@
                     Changes applied successfully!
                 </div>
             </div>
-            <textarea id="htmlOutput" class="w-full h-80 p-4 border border-gray-300 rounded-lg code-font text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Modified HTML will appear here..." readonly></textarea>
+            <textarea id="htmlOutput"
+                class="w-full h-80 p-4 border border-gray-300 rounded-lg code-font text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Modified HTML will appear here..." readonly></textarea>
         </div>
     </div>
 
